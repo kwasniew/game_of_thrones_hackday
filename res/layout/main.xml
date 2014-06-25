@@ -8,6 +8,29 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Threshold"
+        style="?android:listSeparatorTextViewStyle"/>
+
+    <EditText
+        android:id="@+id/threshold_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="50"/>
+
+    <Button
+        android:id="@+id/threshold_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Set Threshold"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"/>
+
+    <TextView
+        android:layout_marginTop="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Location"
         style="?android:listSeparatorTextViewStyle"/>
 
@@ -21,18 +44,26 @@
         android:id="@+id/location_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Set Location"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"/>
 
 
     <TextView
+        android:layout_marginTop="64dp"
         android:id="@+id/LIGHT_available"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
+
     <TextView
         android:id="@+id/LIGHT_reading"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/lightStatus"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

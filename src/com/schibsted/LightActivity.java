@@ -22,10 +22,11 @@ import java.io.IOException;
 import java.util.Date;
 
 public class LightActivity extends Activity {
-    TextView textLIGHT_available, textLIGHT_reading;
+    TextView textLIGHT_available, textLIGHT_reading, lightStatus;
     String locationName = "default";
     long lastUpdated = 0;
     int dim = 0;
+    int threshold = 30;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,14 +36,30 @@ public class LightActivity extends Activity {
 
         View view = this.findViewById(android.R.id.content);
         Button button = (Button) view.findViewById(R.id.location_button);
-        final EditText location = (EditText) view.findViewById(R.id.location_text);
+        final EditText locationText = (EditText) view.findViewById(R.id.location_text);
+
+        locationText.setText(locationName);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locationName = location.getText().toString();
+                locationName = locationText.getText().toString();
             }
         });
+
+        Button thresholdButton = (Button) view.findViewById(R.id.threshold_button);
+        final EditText thresholdText = (EditText) view.findViewById(R.id.threshold_text);
+        thresholdText.setText(String.valueOf(threshold));
+
+        thresholdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                threshold = Integer.parseInt(thresholdText.getText().toString());
+            }
+        });
+
+
+
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -50,6 +67,8 @@ public class LightActivity extends Activity {
                 = (TextView) findViewById(R.id.LIGHT_available);
         textLIGHT_reading
                 = (TextView) findViewById(R.id.LIGHT_reading);
+        lightStatus
+                = (TextView) findViewById(R.id.lightStatus);
 
         SensorManager mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
@@ -77,15 +96,23 @@ public class LightActivity extends Activity {
         @Override
         public void onSensorChanged(SensorEvent event) {
             if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
+
                 textLIGHT_reading.setText("LIGHT: " + event.values[0]);
                 dim = (int) event.values[0];
 
+                lightStatus.setText("Status: " + (effectiveDim(dim).equals("1") ? "on" : "off"));
+
                 long now = new Date().getTime();
                 if(now - lastUpdated > 1000) {
-                    new MyAsyncTask().execute(locationName, String.valueOf(dim));
+                    new MyAsyncTask().execute(locationName, effectiveDim(dim));
                     lastUpdated = now;
                 }
             }
+        }
+
+        private String effectiveDim(int dim) {
+            if(dim > threshold) return "1";
+            return "0";
         }
 
     };
